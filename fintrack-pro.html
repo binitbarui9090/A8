@@ -1,994 +1,1384 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>FinTrack Pro</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+  <head>
+    <meta charset="UTF-8" />
+    <title>FinTrack Pro</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 
-:root{
-  --bg-dark:#14171a;
-  --surface-dark:#1c2024;
-  --surface-dark-2:#22262b;
-  --bg-light:#f4f1ea;
-  --surface-light:#ffffff;
-  --surface-light-2:#ebe7dc;
-  --ink-dark:#e7e5e0;
-  --ink-dark-muted:#8b9199;
-  --ink-light:#22201b;
-  --ink-light-muted:#71695c;
-  --green:#3ecf8e;
-  --green-dim:#2a9e6b;
-  --red:#e8604c;
-  --gold:#d4a85a;
-  --line-dark:#2c3136;
-  --line-light:#d9d2c2;
-  --radius:10px;
-}
-
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{
-  background:var(--bg-dark);
-  color:var(--ink-dark);
-  font-family:'IBM Plex Sans',sans-serif;
-  min-height:100vh;
-  transition:background .3s ease,color .3s ease;
-  -webkit-font-smoothing:antialiased;
-}
-body.light{
-  background:var(--bg-light);
-  color:var(--ink-light);
-}
-
-.wrap{
-  max-width:760px;
-  margin:0 auto;
-  padding:28px 20px 60px;
-}
-
-/* ---------- Header ---------- */
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:22px;
-}
-.brand{
-  display:flex;
-  align-items:baseline;
-  gap:10px;
-}
-.brand .mark{
-  font-family:'Fraunces',serif;
-  font-size:26px;
-  font-weight:600;
-  letter-spacing:-0.02em;
-}
-.brand .sub{
-  font-size:11px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--ink-dark-muted);
-}
-body.light .brand .sub{color:var(--ink-light-muted);}
-
-.topbar-actions{display:flex;gap:8px;align-items:center;}
-.icon-btn{
-  width:36px;height:36px;
-  border-radius:50%;
-  border:1px solid var(--line-dark);
-  background:var(--surface-dark);
-  color:inherit;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;
-  font-size:15px;
-  transition:transform .15s ease, background .15s ease;
-}
-body.light .icon-btn{border-color:var(--line-light);background:var(--surface-light);}
-.icon-btn:hover{transform:translateY(-1px);}
-.icon-btn:active{transform:translateY(0px);}
-.icon-btn:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
-  outline:2px solid var(--green);
-  outline-offset:2px;
-}
-.text-btn{
-  border:1px solid var(--line-dark);
-  background:var(--surface-dark);
-  color:var(--ink-dark-muted);
-  font-family:'IBM Plex Sans',sans-serif;
-  font-size:12px;
-  padding:0 14px;
-  height:36px;
-  border-radius:20px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-body.light .text-btn{border-color:var(--line-light);background:var(--surface-light);color:var(--ink-light-muted);}
-.text-btn:hover{color:var(--red);border-color:var(--red);}
-
-/* ---------- Login screen ---------- */
-#loginScreen{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-}
-.passbook{
-  width:100%;
-  max-width:380px;
-  background:var(--surface-dark);
-  border:1px solid var(--line-dark);
-  border-radius:var(--radius);
-  padding:30px 28px 26px;
-  position:relative;
-}
-body.light .passbook{background:var(--surface-light);border-color:var(--line-light);}
-.passbook::before{
-  content:"";
-  position:absolute;
-  top:0; left:22px; right:22px;
-  height:1px;
-  background:repeating-linear-gradient(to right, var(--line-dark) 0 6px, transparent 6px 12px);
-}
-body.light .passbook::before{background:repeating-linear-gradient(to right, var(--line-light) 0 6px, transparent 6px 12px);}
-.passbook-mark{
-  font-family:'Fraunces',serif;
-  font-size:24px;
-  font-weight:600;
-  letter-spacing:-0.02em;
-  margin-bottom:2px;
-}
-.passbook-tag{
-  font-size:11px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--ink-dark-muted);
-  margin-bottom:22px;
-}
-body.light .passbook-tag{color:var(--ink-light-muted);}
-.passbook .field{margin-bottom:14px;}
-.passbook .field label{
-  display:block;
-  font-size:10px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--ink-dark-muted);
-  margin-bottom:5px;
-}
-body.light .passbook .field label{color:var(--ink-light-muted);}
-.passbook .field input{
-  width:100%;
-  background:var(--surface-dark-2);
-  border:1px solid var(--line-dark);
-  color:inherit;
-  padding:10px 12px;
-  border-radius:6px;
-  font-family:'IBM Plex Mono',monospace;
-  font-size:14px;
-  letter-spacing:.04em;
-}
-body.light .passbook .field input{background:var(--surface-light-2);border-color:var(--line-light);}
-.passbook .field input:focus{outline:none;border-color:var(--green);}
-.passbook-error{
-  font-size:12px;
-  color:var(--red);
-  margin:-4px 0 12px;
-  min-height:16px;
-}
-.passbook-submit{
-  width:100%;
-  padding:11px;
-  border-radius:6px;
-  border:none;
-  background:var(--green);
-  color:#0d1210;
-  font-weight:600;
-  font-size:14px;
-  cursor:pointer;
-  font-family:'IBM Plex Sans',sans-serif;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-}
-.passbook-submit:hover{background:var(--green-dim);}
-.passbook-submit:disabled{opacity:.6;cursor:default;}
-.passbook-hint{
-  font-size:11px;
-  color:var(--ink-dark-muted);
-  margin-top:16px;
-  line-height:1.5;
-  text-align:center;
-}
-body.light .passbook-hint{color:var(--ink-light-muted);}
-.spinner{
-  width:13px;height:13px;
-  border-radius:50%;
-  border:2px solid rgba(13,18,16,.35);
-  border-top-color:#0d1210;
-  animation:spin .7s linear infinite;
-  display:inline-block;
-}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-#appScreen{display:none;}
-
-/* ---------- Statement Hero ---------- */
-.statement{
-  background:var(--surface-dark);
-  border:1px solid var(--line-dark);
-  border-radius:var(--radius);
-  padding:26px 26px 0;
-  position:relative;
-}
-body.light .statement{background:var(--surface-light);border-color:var(--line-light);}
-
-.statement-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  flex-wrap:wrap;
-  gap:18px;
-}
-.balance-block .eyebrow{
-  font-size:11px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--ink-dark-muted);
-  margin-bottom:6px;
-}
-body.light .balance-block .eyebrow{color:var(--ink-light-muted);}
-.balance-num{
-  font-family:'Fraunces',serif;
-  font-size:52px;
-  font-weight:500;
-  letter-spacing:-0.01em;
-  line-height:1;
-  font-variant-numeric:tabular-nums;
-}
-.balance-num.negative{color:var(--red);}
-
-.currency-picker select{
-  background:transparent;
-  border:1px solid var(--line-dark);
-  color:inherit;
-  font-family:'IBM Plex Mono',monospace;
-  font-size:12px;
-  padding:7px 10px;
-  border-radius:20px;
-  cursor:pointer;
-}
-body.light .currency-picker select{border-color:var(--line-light);}
-
-.stat-pair{
-  display:flex;
-  gap:26px;
-  margin-top:20px;
-}
-.stat-pair .stat{font-family:'IBM Plex Mono',monospace;}
-.stat-pair .stat .label{
-  font-size:10px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color:var(--ink-dark-muted);
-  margin-bottom:4px;
-}
-body.light .stat-pair .stat .label{color:var(--ink-light-muted);}
-.stat-pair .stat .val{font-size:16px;font-weight:500;}
-.stat.income .val{color:var(--green);}
-.stat.expense .val{color:var(--red);}
-
-/* perforated tear */
-.perf{
-  height:22px;
-  margin-top:22px;
-  background-image: radial-gradient(circle, var(--bg-dark) 3px, transparent 3.2px);
-  background-size: 16px 22px;
-  background-position: 8px 0;
-  border-top:1px dashed var(--line-dark);
-  position:relative;
-}
-body.light .perf{background-image: radial-gradient(circle, var(--bg-light) 3px, transparent 3.2px); border-color:var(--line-light);}
-
-/* ---------- Chart ---------- */
-.chart-card{
-  background:var(--surface-dark);
-  border:1px solid var(--line-dark);
-  border-top:none;
-  border-radius:0 0 var(--radius) var(--radius);
-  padding:6px 26px 20px;
-  margin-top:-22px;
-}
-body.light .chart-card{background:var(--surface-light);border-color:var(--line-light);}
-.chart-card .eyebrow{
-  font-size:11px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--ink-dark-muted);
-  margin-bottom:10px;
-}
-body.light .chart-card .eyebrow{color:var(--ink-light-muted);}
-
-/* ---------- Add transaction ---------- */
-.entry-card{
-  margin-top:18px;
-  background:var(--surface-dark);
-  border:1px solid var(--line-dark);
-  border-radius:var(--radius);
-  padding:20px;
-}
-body.light .entry-card{background:var(--surface-light);border-color:var(--line-light);}
-.entry-title{
-  font-family:'Fraunces',serif;
-  font-size:17px;
-  margin:0 0 14px;
-}
-.entry-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-.entry-grid .full{grid-column:1/-1;}
-.field label{
-  display:block;
-  font-size:10px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:var(--ink-dark-muted);
-  margin-bottom:5px;
-}
-body.light .field label{color:var(--ink-light-muted);}
-.field input, .field select{
-  width:100%;
-  background:var(--surface-dark-2);
-  border:1px solid var(--line-dark);
-  color:inherit;
-  padding:9px 11px;
-  border-radius:6px;
-  font-family:'IBM Plex Sans',sans-serif;
-  font-size:14px;
-}
-body.light .field input, body.light .field select{background:var(--surface-light-2);border-color:var(--line-light);}
-.field input:focus, .field select:focus{outline:none;border-color:var(--green);}
-
-.type-toggle{
-  display:flex;
-  gap:8px;
-  grid-column:1/-1;
-}
-.type-toggle button{
-  flex:1;
-  padding:9px;
-  border-radius:6px;
-  border:1px solid var(--line-dark);
-  background:var(--surface-dark-2);
-  color:var(--ink-dark-muted);
-  font-size:13px;
-  cursor:pointer;
-  font-family:'IBM Plex Sans',sans-serif;
-}
-body.light .type-toggle button{border-color:var(--line-light);background:var(--surface-light-2);color:var(--ink-light-muted);}
-.type-toggle button.active.income{background:rgba(62,207,142,.14);border-color:var(--green);color:var(--green);}
-.type-toggle button.active.expense{background:rgba(232,96,76,.14);border-color:var(--red);color:var(--red);}
-
-.add-btn{
-  grid-column:1/-1;
-  margin-top:4px;
-  padding:11px;
-  border-radius:6px;
-  border:none;
-  background:var(--green);
-  color:#0d1210;
-  font-weight:600;
-  font-size:14px;
-  cursor:pointer;
-  font-family:'IBM Plex Sans',sans-serif;
-}
-.add-btn:hover{background:var(--green-dim);}
-
-/* ---------- Ledger / transactions ---------- */
-.ledger-card{
-  margin-top:18px;
-  background:var(--surface-dark);
-  border:1px solid var(--line-dark);
-  border-radius:var(--radius);
-  padding:20px;
-}
-body.light .ledger-card{background:var(--surface-light);border-color:var(--line-light);}
-.ledger-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:14px;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.ledger-title{font-family:'Fraunces',serif;font-size:17px;margin:0;}
-.filters{display:flex;gap:6px;}
-.filters button{
-  padding:6px 12px;
-  font-size:12px;
-  border-radius:20px;
-  border:1px solid var(--line-dark);
-  background:transparent;
-  color:var(--ink-dark-muted);
-  cursor:pointer;
-  font-family:'IBM Plex Sans',sans-serif;
-}
-body.light .filters button{border-color:var(--line-light);color:var(--ink-light-muted);}
-.filters button.active{background:var(--ink-dark);color:var(--bg-dark);border-color:var(--ink-dark);}
-body.light .filters button.active{background:var(--ink-light);color:var(--bg-light);border-color:var(--ink-light);}
-
-.tx-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px 2px;
-  border-bottom:1px dotted var(--line-dark);
-}
-body.light .tx-row{border-color:var(--line-light);}
-.tx-row:last-child{border-bottom:none;}
-.tx-dot{
-  width:8px;height:8px;border-radius:50%;
-  flex-shrink:0;
-}
-.tx-dot.income{background:var(--green);}
-.tx-dot.expense{background:var(--red);}
-.tx-info{flex:1;min-width:0;}
-.tx-desc{font-size:14px;font-weight:500;}
-.tx-meta{font-size:11px;color:var(--ink-dark-muted);margin-top:2px;}
-body.light .tx-meta{color:var(--ink-light-muted);}
-.tx-amt{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500;white-space:nowrap;}
-.tx-amt.income{color:var(--green);}
-.tx-amt.expense{color:var(--red);}
-.tx-del{
-  background:none;border:none;color:var(--ink-dark-muted);
-  cursor:pointer;font-size:16px;line-height:1;padding:4px;
-  border-radius:4px;
-}
-body.light .tx-del{color:var(--ink-light-muted);}
-.tx-del:hover{color:var(--red);}
-
-.empty-state{
-  text-align:center;
-  padding:36px 10px;
-  color:var(--ink-dark-muted);
-  font-size:13px;
-}
-body.light .empty-state{color:var(--ink-light-muted);}
-.empty-state .glyph{font-size:22px;display:block;margin-bottom:8px;}
-
-/* ---------- Settings ---------- */
-.settings-card{
-  margin-top:18px;
-  background:var(--surface-dark);
-  border:1px solid var(--line-dark);
-  border-radius:var(--radius);
-  padding:20px;
-}
-body.light .settings-card{background:var(--surface-light);border-color:var(--line-light);}
-.settings-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:14px;
-}
-.reset-row{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-top:16px;padding-top:16px;border-top:1px solid var(--line-dark);
-}
-body.light .reset-row{border-color:var(--line-light);}
-.reset-row p{margin:0;font-size:12px;color:var(--ink-dark-muted);max-width:340px;}
-body.light .reset-row p{color:var(--ink-light-muted);}
-.reset-btn{
-  background:none;
-  border:1px solid var(--red);
-  color:var(--red);
-  padding:8px 14px;
-  border-radius:6px;
-  font-size:12px;
-  cursor:pointer;
-  font-family:'IBM Plex Sans',sans-serif;
-  flex-shrink:0;
-}
-.reset-btn:hover{background:rgba(232,96,76,.1);}
-
-.footnote{
-  text-align:center;
-  font-size:11px;
-  color:var(--ink-dark-muted);
-  margin-top:22px;
-  letter-spacing:.02em;
-}
-body.light .footnote{color:var(--ink-light-muted);}
-
-@media(max-width:480px){
-  .balance-num{font-size:40px;}
-  .entry-grid{grid-template-columns:1fr;}
-  .settings-grid{grid-template-columns:1fr;}
-}
-</style>
-</head>
-<body>
-
-<div id="loginScreen">
-  <div class="passbook">
-    <div class="passbook-mark">FinTrack Pro</div>
-    <div class="passbook-tag">Account access</div>
-    <form id="loginForm">
-      <div class="field">
-        <label for="loginUsername">Account name</label>
-        <input type="text" id="loginUsername" placeholder="e.g. alex" autocomplete="username" required>
-      </div>
-      <div class="field">
-        <label for="loginPin">4-digit PIN</label>
-        <input type="password" id="loginPin" placeholder="••••" inputmode="numeric" maxlength="4" autocomplete="current-password" required>
-      </div>
-      <div class="passbook-error" id="loginError"></div>
-      <button type="submit" class="passbook-submit" id="loginSubmit">Continue</button>
-    </form>
-    <div class="passbook-hint">New account name → creates a fresh ledger with that PIN.<br>Existing name → enter its matching PIN to open it.</div>
-  </div>
-</div>
-
-<div id="appScreen">
-<div class="wrap">
-
-  <div class="topbar">
-    <div class="brand">
-      <span class="mark">FinTrack Pro</span>
-      <span class="sub" id="greeting">Ledger</span>
-    </div>
-    <div class="topbar-actions">
-      <button class="text-btn" id="logoutBtn" title="Log out">Log out</button>
-      <button class="icon-btn" id="themeToggle" title="Toggle dark / light" aria-label="Toggle theme">◐</button>
-    </div>
-  </div>
-
-  <div class="statement">
-    <div class="statement-row">
-      <div class="balance-block">
-        <div class="eyebrow">Current balance</div>
-        <div class="balance-num" id="balanceNum">0.00</div>
-      </div>
-      <div class="currency-picker">
-        <select id="currencySelect">
-          <option value="USD">$ USD</option>
-          <option value="EUR">€ EUR</option>
-          <option value="GBP">£ GBP</option>
-          <option value="INR">₹ INR</option>
-          <option value="JPY">¥ JPY</option>
-        </select>
-      </div>
-    </div>
-    <div class="stat-pair">
-      <div class="stat income">
-        <div class="label">Total income</div>
-        <div class="val" id="incomeVal">0.00</div>
-      </div>
-      <div class="stat expense">
-        <div class="label">Total expense</div>
-        <div class="val" id="expenseVal">0.00</div>
-      </div>
-    </div>
-    <div class="perf"></div>
-  </div>
-  <div class="chart-card">
-    <div class="eyebrow">Cash flow, last 7 entries</div>
-    <div id="chartHolder"></div>
-  </div>
-
-  <div class="entry-card">
-    <h2 class="entry-title">Add a transaction</h2>
-    <div class="entry-grid">
-      <div class="type-toggle">
-        <button type="button" id="typeIncomeBtn" class="active income">＋ Income</button>
-        <button type="button" id="typeExpenseBtn" class="expense">－ Expense</button>
-      </div>
-      <div class="field full">
-        <label for="descInput">Description</label>
-        <input type="text" id="descInput" placeholder="e.g. Freelance payment, Groceries">
-      </div>
-      <div class="field">
-        <label for="amountInput">Amount</label>
-        <input type="number" id="amountInput" placeholder="0.00" step="0.01" min="0">
-      </div>
-      <div class="field">
-        <label for="categoryInput">Category</label>
-        <input type="text" id="categoryInput" placeholder="e.g. Food, Salary">
-      </div>
-      <button class="add-btn" id="addBtn">Add transaction</button>
-    </div>
-  </div>
-
-  <div class="ledger-card">
-    <div class="ledger-head">
-      <h2 class="ledger-title">Transaction history</h2>
-      <div class="filters">
-        <button class="active" data-filter="all">All</button>
-        <button data-filter="income">Income</button>
-        <button data-filter="expense">Expense</button>
-      </div>
-    </div>
-    <div id="txList"></div>
-  </div>
-
-  <div class="settings-card">
-    <h2 class="entry-title">Profile settings</h2>
-    <div class="settings-grid">
-      <div class="field">
-        <label for="nameInput">Display name</label>
-        <input type="text" id="nameInput" placeholder="e.g. Alex">
-      </div>
-      <div class="field">
-        <label for="prefCurrency">Preferred currency</label>
-        <select id="prefCurrency">
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="GBP">GBP</option>
-          <option value="INR">INR</option>
-          <option value="JPY">JPY</option>
-        </select>
-      </div>
-    </div>
-    <div class="reset-row">
-      <p>Clear every saved transaction and preference for this account. This cannot be undone.</p>
-      <button class="reset-btn" id="resetBtn">Reset all data</button>
-    </div>
-  </div>
-
-  <div class="footnote" id="footnote">Signed in as <span id="footAccount"></span> — data is saved to your Claude account.</div>
-</div>
-</div>
-
-<script>
-(function(){
-  // ---- constants ----
-  const RATES = { USD:1, EUR:0.92, GBP:0.78, INR:83.5, JPY:156 };
-  const SYMS = { USD:'$', EUR:'€', GBP:'£', INR:'₹', JPY:'¥' };
-  const LAST_USER_KEY = 'fintrack:lastUser';
-
-  function daysAgo(n){
-    const d = new Date();
-    d.setDate(d.getDate()-n);
-    return d.toISOString();
-  }
-
-  function seedTransactions(){
-    return [
-      {id:1, desc:'Monthly salary', category:'Salary', type:'income', amountUSD:2400, date: daysAgo(6)},
-      {id:2, desc:'Groceries', category:'Food', type:'expense', amountUSD:86.4, date: daysAgo(5)},
-      {id:3, desc:'Freelance design work', category:'Freelance', type:'income', amountUSD:320, date: daysAgo(4)},
-      {id:4, desc:'Electricity bill', category:'Utilities', type:'expense', amountUSD:64, date: daysAgo(2)},
-      {id:5, desc:'Coffee & lunch', category:'Food', type:'expense', amountUSD:18.5, date: daysAgo(1)},
-    ];
-  }
-
-  let state = {
-    username:'',
-    pin:'',
-    name:'',
-    currency:'USD',
-    theme:'dark',
-    type:'income',
-    filter:'all',
-    transactions:[]
-  };
-
-  function accountKey(username){
-    return 'fintrack:user:' + username.trim().toLowerCase();
-  }
-
-  // ---- elements: login ----
-  const loginScreen = document.getElementById('loginScreen');
-  const appScreen = document.getElementById('appScreen');
-  const loginForm = document.getElementById('loginForm');
-  const loginUsername = document.getElementById('loginUsername');
-  const loginPin = document.getElementById('loginPin');
-  const loginError = document.getElementById('loginError');
-  const loginSubmit = document.getElementById('loginSubmit');
-
-  // prefill last used account name, best-effort
-  (async function prefill(){
-    try{
-      const res = await window.storage.get(LAST_USER_KEY, false);
-      if(res && res.value) loginUsername.value = res.value;
-    }catch(e){ /* no last user yet, ignore */ }
-  })();
-
-  function setLoginBusy(busy, label){
-    loginSubmit.disabled = busy;
-    loginSubmit.innerHTML = busy ? `<span class="spinner"></span> ${label || 'Working…'}` : 'Continue';
-  }
-
-  loginForm.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    loginError.textContent = '';
-    const username = loginUsername.value.trim();
-    const pin = loginPin.value.trim();
-
-    if(!username){
-      loginError.textContent = 'Enter an account name.';
-      return;
-    }
-    if(!/^\d{4}$/.test(pin)){
-      loginError.textContent = 'PIN must be exactly 4 digits.';
-      return;
-    }
-
-    const key = accountKey(username);
-    setLoginBusy(true, 'Checking…');
-
-    let existing = null;
-    try{
-      const res = await window.storage.get(key, false);
-      if(res && res.value) existing = JSON.parse(res.value);
-    }catch(e){
-      existing = null; // key not found -> treat as new account
-    }
-
-    if(existing){
-      if(existing.pin !== pin){
-        setLoginBusy(false);
-        loginError.textContent = 'Incorrect PIN for that account name.';
-        loginPin.value = '';
-        loginPin.focus();
-        return;
+      :root {
+        --bg-dark: #14171a;
+        --surface-dark: #1c2024;
+        --surface-dark-2: #22262b;
+        --bg-light: #f4f1ea;
+        --surface-light: #ffffff;
+        --surface-light-2: #ebe7dc;
+        --ink-dark: #e7e5e0;
+        --ink-dark-muted: #8b9199;
+        --ink-light: #22201b;
+        --ink-light-muted: #71695c;
+        --green: #3ecf8e;
+        --green-dim: #2a9e6b;
+        --red: #e8604c;
+        --gold: #d4a85a;
+        --line-dark: #2c3136;
+        --line-light: #d9d2c2;
+        --radius: 10px;
       }
-      state.username = username;
-      state.pin = pin;
-      state.name = existing.name || '';
-      state.currency = existing.currency || 'USD';
-      state.theme = existing.theme || 'dark';
-      state.transactions = Array.isArray(existing.transactions) ? existing.transactions : [];
-    } else {
-      // brand new account
-      state.username = username;
-      state.pin = pin;
-      state.name = '';
-      state.currency = 'USD';
-      state.theme = 'dark';
-      state.transactions = seedTransactions();
-      try{
-        await window.storage.set(key, JSON.stringify({
-          pin: state.pin, name: state.name, currency: state.currency,
-          theme: state.theme, transactions: state.transactions
-        }), false);
-      }catch(e){
-        setLoginBusy(false);
-        loginError.textContent = "Couldn't create the account. Try again.";
-        return;
+
+      * {
+        box-sizing: border-box;
       }
-    }
-
-    try{ await window.storage.set(LAST_USER_KEY, username, false); }catch(e){ /* non-critical */ }
-
-    setLoginBusy(false);
-    enterApp();
-  });
-
-  function enterApp(){
-    loginScreen.style.display = 'none';
-    appScreen.style.display = 'block';
-    document.body.classList.toggle('light', state.theme === 'light');
-    footAccount.textContent = state.username;
-    render();
-  }
-
-  function showLogin(){
-    appScreen.style.display = 'none';
-    loginScreen.style.display = 'flex';
-    loginPin.value = '';
-    loginError.textContent = '';
-    loginPin.focus();
-  }
-
-  // ---- persistence ----
-  let saveTimer = null;
-  function saveUserData(){
-    if(!state.username) return;
-    const key = accountKey(state.username);
-    const payload = JSON.stringify({
-      pin: state.pin, name: state.name, currency: state.currency,
-      theme: state.theme, transactions: state.transactions
-    });
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(async ()=>{
-      try{
-        await window.storage.set(key, payload, false);
-      }catch(e){
-        console.error('Save failed', e);
+      html,
+      body {
+        margin: 0;
+        padding: 0;
       }
-    }, 250);
-  }
+      body {
+        background: var(--bg-dark);
+        color: var(--ink-dark);
+        font-family: "IBM Plex Sans", sans-serif;
+        min-height: 100vh;
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+        -webkit-font-smoothing: antialiased;
+      }
+      body.light {
+        background: var(--bg-light);
+        color: var(--ink-light);
+      }
 
-  // ---- elements: app ----
-  const el = id => document.getElementById(id);
-  const balanceNum = el('balanceNum'), incomeVal = el('incomeVal'), expenseVal = el('expenseVal');
-  const txList = el('txList'), chartHolder = el('chartHolder');
-  const currencySelect = el('currencySelect'), prefCurrency = el('prefCurrency');
-  const nameInput = el('nameInput'), greeting = el('greeting');
-  const descInput = el('descInput'), amountInput = el('amountInput'), categoryInput = el('categoryInput');
-  const typeIncomeBtn = el('typeIncomeBtn'), typeExpenseBtn = el('typeExpenseBtn');
-  const footAccount = el('footAccount');
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 28px 20px 60px;
+      }
 
-  function fmt(amountUSD){
-    const rate = RATES[state.currency];
-    const val = amountUSD * rate;
-    const sym = SYMS[state.currency];
-    const decimals = state.currency === 'JPY' ? 0 : 2;
-    return sym + val.toLocaleString(undefined, {minimumFractionDigits:decimals, maximumFractionDigits:decimals});
-  }
+      /* ---------- Header ---------- */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 22px;
+      }
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      .brand .mark {
+        font-family: "Fraunces", serif;
+        font-size: 26px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+      .brand .sub {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-dark-muted);
+      }
+      body.light .brand .sub {
+        color: var(--ink-light-muted);
+      }
 
-  function render(){
-    greeting.textContent = state.name ? `${state.name}'s Ledger` : 'Ledger';
-    currencySelect.value = state.currency;
-    prefCurrency.value = state.currency;
-    nameInput.value = state.name;
+      .topbar-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--line-dark);
+        background: var(--surface-dark);
+        color: inherit;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 15px;
+        transition:
+          transform 0.15s ease,
+          background 0.15s ease;
+      }
+      body.light .icon-btn {
+        border-color: var(--line-light);
+        background: var(--surface-light);
+      }
+      .icon-btn:hover {
+        transform: translateY(-1px);
+      }
+      .icon-btn:active {
+        transform: translateY(0px);
+      }
+      .icon-btn:focus-visible,
+      button:focus-visible,
+      input:focus-visible,
+      select:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 2px;
+      }
+      .text-btn {
+        border: 1px solid var(--line-dark);
+        background: var(--surface-dark);
+        color: var(--ink-dark-muted);
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 12px;
+        padding: 0 14px;
+        height: 36px;
+        border-radius: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      body.light .text-btn {
+        border-color: var(--line-light);
+        background: var(--surface-light);
+        color: var(--ink-light-muted);
+      }
+      .text-btn:hover {
+        color: var(--red);
+        border-color: var(--red);
+      }
 
-    let income=0, expense=0;
-    state.transactions.forEach(t=>{
-      if(t.type==='income') income += t.amountUSD; else expense += t.amountUSD;
-    });
-    const balance = income - expense;
-    balanceNum.textContent = fmt(balance);
-    balanceNum.classList.toggle('negative', balance < 0);
-    incomeVal.textContent = fmt(income);
-    expenseVal.textContent = fmt(expense);
+      /* ---------- Login screen ---------- */
+      #loginScreen {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .passbook {
+        width: 100%;
+        max-width: 380px;
+        background: var(--surface-dark);
+        border: 1px solid var(--line-dark);
+        border-radius: var(--radius);
+        padding: 30px 28px 26px;
+        position: relative;
+      }
+      body.light .passbook {
+        background: var(--surface-light);
+        border-color: var(--line-light);
+      }
+      .passbook::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 22px;
+        right: 22px;
+        height: 1px;
+        background: repeating-linear-gradient(
+          to right,
+          var(--line-dark) 0 6px,
+          transparent 6px 12px
+        );
+      }
+      body.light .passbook::before {
+        background: repeating-linear-gradient(
+          to right,
+          var(--line-light) 0 6px,
+          transparent 6px 12px
+        );
+      }
+      .passbook-mark {
+        font-family: "Fraunces", serif;
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin-bottom: 2px;
+      }
+      .passbook-tag {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-dark-muted);
+        margin-bottom: 22px;
+      }
+      body.light .passbook-tag {
+        color: var(--ink-light-muted);
+      }
+      .passbook .field {
+        margin-bottom: 14px;
+      }
+      .passbook .field label {
+        display: block;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-dark-muted);
+        margin-bottom: 5px;
+      }
+      body.light .passbook .field label {
+        color: var(--ink-light-muted);
+      }
+      .passbook .field input {
+        width: 100%;
+        background: var(--surface-dark-2);
+        border: 1px solid var(--line-dark);
+        color: inherit;
+        padding: 10px 12px;
+        border-radius: 6px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 14px;
+        letter-spacing: 0.04em;
+      }
+      body.light .passbook .field input {
+        background: var(--surface-light-2);
+        border-color: var(--line-light);
+      }
+      .passbook .field input:focus {
+        outline: none;
+        border-color: var(--green);
+      }
+      .passbook-error {
+        font-size: 12px;
+        color: var(--red);
+        margin: -4px 0 12px;
+        min-height: 16px;
+      }
+      .passbook-submit {
+        width: 100%;
+        padding: 11px;
+        border-radius: 6px;
+        border: none;
+        background: var(--green);
+        color: #0d1210;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        font-family: "IBM Plex Sans", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .passbook-submit:hover {
+        background: var(--green-dim);
+      }
+      .passbook-submit:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+      .passbook-hint {
+        font-size: 11px;
+        color: var(--ink-dark-muted);
+        margin-top: 16px;
+        line-height: 1.5;
+        text-align: center;
+      }
+      body.light .passbook-hint {
+        color: var(--ink-light-muted);
+      }
+      .spinner {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        border: 2px solid rgba(13, 18, 16, 0.35);
+        border-top-color: #0d1210;
+        animation: spin 0.7s linear infinite;
+        display: inline-block;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
 
-    renderChart();
-    renderList();
-  }
+      #appScreen {
+        display: none;
+      }
 
-  function renderChart(){
-    const items = state.transactions.slice(-7);
-    chartHolder.innerHTML = '';
-    if(items.length === 0){
-      chartHolder.innerHTML = '<div class="empty-state" style="padding:20px 0;">No data yet — add a transaction to see cash flow.</div>';
-      return;
-    }
-    const w = chartHolder.clientWidth || 660;
-    const h = 90;
-    const barW = w / items.length;
-    const maxAbs = Math.max(...items.map(t => t.amountUSD), 1);
-    let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">`;
-    const zero = h/2;
-    svg += `<line x1="0" y1="${zero}" x2="${w}" y2="${zero}" stroke="var(--line-dark)" stroke-width="1"/>`;
-    items.forEach((t,i)=>{
-      const barH = (t.amountUSD / maxAbs) * (h/2 - 8);
-      const x = i*barW + barW*0.25;
-      const bw = barW*0.5;
-      const color = t.type==='income' ? 'var(--green)' : 'var(--red)';
-      const y = t.type==='income' ? zero - barH : zero;
-      const hh = Math.max(barH,2);
-      svg += `<rect x="${x}" y="${y}" width="${bw}" height="${hh}" rx="2" fill="${color}"/>`;
-    });
-    svg += `</svg>`;
-    chartHolder.innerHTML = svg;
-  }
+      /* ---------- Statement Hero ---------- */
+      .statement {
+        background: var(--surface-dark);
+        border: 1px solid var(--line-dark);
+        border-radius: var(--radius);
+        padding: 26px 26px 0;
+        position: relative;
+      }
+      body.light .statement {
+        background: var(--surface-light);
+        border-color: var(--line-light);
+      }
 
-  function renderList(){
-    let items = state.transactions.slice().reverse();
-    if(state.filter !== 'all') items = items.filter(t=>t.type===state.filter);
+      .statement-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+      .balance-block .eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-dark-muted);
+        margin-bottom: 6px;
+      }
+      body.light .balance-block .eyebrow {
+        color: var(--ink-light-muted);
+      }
+      .balance-num {
+        font-family: "Fraunces", serif;
+        font-size: 52px;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+      }
+      .balance-num.negative {
+        color: var(--red);
+      }
 
-    if(items.length === 0){
-      txList.innerHTML = `<div class="empty-state"><span class="glyph">✎</span>No entries here yet. Add your first transaction above.</div>`;
-      return;
-    }
-    txList.innerHTML = items.map(t=>{
-      const d = new Date(t.date);
-      const dateStr = d.toLocaleDateString(undefined,{month:'short', day:'numeric'});
-      const sign = t.type==='income' ? '+' : '−';
-      return `
+      .currency-picker select {
+        background: transparent;
+        border: 1px solid var(--line-dark);
+        color: inherit;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        padding: 7px 10px;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+      body.light .currency-picker select {
+        border-color: var(--line-light);
+      }
+
+      .stat-pair {
+        display: flex;
+        gap: 26px;
+        margin-top: 20px;
+      }
+      .stat-pair .stat {
+        font-family: "IBM Plex Mono", monospace;
+      }
+      .stat-pair .stat .label {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-dark-muted);
+        margin-bottom: 4px;
+      }
+      body.light .stat-pair .stat .label {
+        color: var(--ink-light-muted);
+      }
+      .stat-pair .stat .val {
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .stat.income .val {
+        color: var(--green);
+      }
+      .stat.expense .val {
+        color: var(--red);
+      }
+
+      /* perforated tear */
+      .perf {
+        height: 22px;
+        margin-top: 22px;
+        background-image: radial-gradient(
+          circle,
+          var(--bg-dark) 3px,
+          transparent 3.2px
+        );
+        background-size: 16px 22px;
+        background-position: 8px 0;
+        border-top: 1px dashed var(--line-dark);
+        position: relative;
+      }
+      body.light .perf {
+        background-image: radial-gradient(
+          circle,
+          var(--bg-light) 3px,
+          transparent 3.2px
+        );
+        border-color: var(--line-light);
+      }
+
+      /* ---------- Chart ---------- */
+      .chart-card {
+        background: var(--surface-dark);
+        border: 1px solid var(--line-dark);
+        border-top: none;
+        border-radius: 0 0 var(--radius) var(--radius);
+        padding: 6px 26px 20px;
+        margin-top: -22px;
+      }
+      body.light .chart-card {
+        background: var(--surface-light);
+        border-color: var(--line-light);
+      }
+      .chart-card .eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-dark-muted);
+        margin-bottom: 10px;
+      }
+      body.light .chart-card .eyebrow {
+        color: var(--ink-light-muted);
+      }
+
+      /* ---------- Add transaction ---------- */
+      .entry-card {
+        margin-top: 18px;
+        background: var(--surface-dark);
+        border: 1px solid var(--line-dark);
+        border-radius: var(--radius);
+        padding: 20px;
+      }
+      body.light .entry-card {
+        background: var(--surface-light);
+        border-color: var(--line-light);
+      }
+      .entry-title {
+        font-family: "Fraunces", serif;
+        font-size: 17px;
+        margin: 0 0 14px;
+      }
+      .entry-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .entry-grid .full {
+        grid-column: 1/-1;
+      }
+      .field label {
+        display: block;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-dark-muted);
+        margin-bottom: 5px;
+      }
+      body.light .field label {
+        color: var(--ink-light-muted);
+      }
+      .field input,
+      .field select {
+        width: 100%;
+        background: var(--surface-dark-2);
+        border: 1px solid var(--line-dark);
+        color: inherit;
+        padding: 9px 11px;
+        border-radius: 6px;
+        font-family: "IBM Plex Sans", sans-serif;
+        font-size: 14px;
+      }
+      body.light .field input,
+      body.light .field select {
+        background: var(--surface-light-2);
+        border-color: var(--line-light);
+      }
+      .field input:focus,
+      .field select:focus {
+        outline: none;
+        border-color: var(--green);
+      }
+
+      .type-toggle {
+        display: flex;
+        gap: 8px;
+        grid-column: 1/-1;
+      }
+      .type-toggle button {
+        flex: 1;
+        padding: 9px;
+        border-radius: 6px;
+        border: 1px solid var(--line-dark);
+        background: var(--surface-dark-2);
+        color: var(--ink-dark-muted);
+        font-size: 13px;
+        cursor: pointer;
+        font-family: "IBM Plex Sans", sans-serif;
+      }
+      body.light .type-toggle button {
+        border-color: var(--line-light);
+        background: var(--surface-light-2);
+        color: var(--ink-light-muted);
+      }
+      .type-toggle button.active.income {
+        background: rgba(62, 207, 142, 0.14);
+        border-color: var(--green);
+        color: var(--green);
+      }
+      .type-toggle button.active.expense {
+        background: rgba(232, 96, 76, 0.14);
+        border-color: var(--red);
+        color: var(--red);
+      }
+
+      .add-btn {
+        grid-column: 1/-1;
+        margin-top: 4px;
+        padding: 11px;
+        border-radius: 6px;
+        border: none;
+        background: var(--green);
+        color: #0d1210;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        font-family: "IBM Plex Sans", sans-serif;
+      }
+      .add-btn:hover {
+        background: var(--green-dim);
+      }
+
+      /* ---------- Ledger / transactions ---------- */
+      .ledger-card {
+        margin-top: 18px;
+        background: var(--surface-dark);
+        border: 1px solid var(--line-dark);
+        border-radius: var(--radius);
+        padding: 20px;
+      }
+      body.light .ledger-card {
+        background: var(--surface-light);
+        border-color: var(--line-light);
+      }
+      .ledger-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .ledger-title {
+        font-family: "Fraunces", serif;
+        font-size: 17px;
+        margin: 0;
+      }
+      .filters {
+        display: flex;
+        gap: 6px;
+      }
+      .filters button {
+        padding: 6px 12px;
+        font-size: 12px;
+        border-radius: 20px;
+        border: 1px solid var(--line-dark);
+        background: transparent;
+        color: var(--ink-dark-muted);
+        cursor: pointer;
+        font-family: "IBM Plex Sans", sans-serif;
+      }
+      body.light .filters button {
+        border-color: var(--line-light);
+        color: var(--ink-light-muted);
+      }
+      .filters button.active {
+        background: var(--ink-dark);
+        color: var(--bg-dark);
+        border-color: var(--ink-dark);
+      }
+      body.light .filters button.active {
+        background: var(--ink-light);
+        color: var(--bg-light);
+        border-color: var(--ink-light);
+      }
+
+      .tx-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 2px;
+        border-bottom: 1px dotted var(--line-dark);
+      }
+      body.light .tx-row {
+        border-color: var(--line-light);
+      }
+      .tx-row:last-child {
+        border-bottom: none;
+      }
+      .tx-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .tx-dot.income {
+        background: var(--green);
+      }
+      .tx-dot.expense {
+        background: var(--red);
+      }
+      .tx-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .tx-desc {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .tx-meta {
+        font-size: 11px;
+        color: var(--ink-dark-muted);
+        margin-top: 2px;
+      }
+      body.light .tx-meta {
+        color: var(--ink-light-muted);
+      }
+      .tx-amt {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+      .tx-amt.income {
+        color: var(--green);
+      }
+      .tx-amt.expense {
+        color: var(--red);
+      }
+      .tx-del {
+        background: none;
+        border: none;
+        color: var(--ink-dark-muted);
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+        padding: 4px;
+        border-radius: 4px;
+      }
+      body.light .tx-del {
+        color: var(--ink-light-muted);
+      }
+      .tx-del:hover {
+        color: var(--red);
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 36px 10px;
+        color: var(--ink-dark-muted);
+        font-size: 13px;
+      }
+      body.light .empty-state {
+        color: var(--ink-light-muted);
+      }
+      .empty-state .glyph {
+        font-size: 22px;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      /* ---------- Settings ---------- */
+      .settings-card {
+        margin-top: 18px;
+        background: var(--surface-dark);
+        border: 1px solid var(--line-dark);
+        border-radius: var(--radius);
+        padding: 20px;
+      }
+      body.light .settings-card {
+        background: var(--surface-light);
+        border-color: var(--line-light);
+      }
+      .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .reset-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--line-dark);
+      }
+      body.light .reset-row {
+        border-color: var(--line-light);
+      }
+      .reset-row p {
+        margin: 0;
+        font-size: 12px;
+        color: var(--ink-dark-muted);
+        max-width: 340px;
+      }
+      body.light .reset-row p {
+        color: var(--ink-light-muted);
+      }
+      .reset-btn {
+        background: none;
+        border: 1px solid var(--red);
+        color: var(--red);
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        cursor: pointer;
+        font-family: "IBM Plex Sans", sans-serif;
+        flex-shrink: 0;
+      }
+      .reset-btn:hover {
+        background: rgba(232, 96, 76, 0.1);
+      }
+
+      .footnote {
+        text-align: center;
+        font-size: 11px;
+        color: var(--ink-dark-muted);
+        margin-top: 22px;
+        letter-spacing: 0.02em;
+      }
+      body.light .footnote {
+        color: var(--ink-light-muted);
+      }
+
+      @media (max-width: 480px) {
+        .balance-num {
+          font-size: 40px;
+        }
+        .entry-grid {
+          grid-template-columns: 1fr;
+        }
+        .settings-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loginScreen">
+      <div class="passbook">
+        <div class="passbook-mark">FinTrack Pro</div>
+        <div class="passbook-tag">Account access</div>
+        <form id="loginForm">
+          <div class="field">
+            <label for="loginUsername">Account name</label>
+            <input
+              type="text"
+              id="loginUsername"
+              placeholder="e.g. alex"
+              autocomplete="username"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="loginPin">4-digit PIN</label>
+            <input
+              type="password"
+              id="loginPin"
+              placeholder="••••"
+              inputmode="numeric"
+              maxlength="4"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <div class="passbook-error" id="loginError"></div>
+          <button type="submit" class="passbook-submit" id="loginSubmit">
+            Continue
+          </button>
+        </form>
+        <div class="passbook-hint">
+          New account name → creates a fresh ledger with that PIN.<br />Existing
+          name → enter its matching PIN to open it.
+        </div>
+      </div>
+    </div>
+
+    <div id="appScreen">
+      <div class="wrap">
+        <div class="topbar">
+          <div class="brand">
+            <span class="mark">FinTrack Pro</span>
+            <span class="sub" id="greeting">Ledger</span>
+          </div>
+          <div class="topbar-actions">
+            <button class="text-btn" id="logoutBtn" title="Log out">
+              Log out
+            </button>
+            <button
+              class="icon-btn"
+              id="themeToggle"
+              title="Toggle dark / light"
+              aria-label="Toggle theme"
+            >
+              ◐
+            </button>
+          </div>
+        </div>
+
+        <div class="statement">
+          <div class="statement-row">
+            <div class="balance-block">
+              <div class="eyebrow">Current balance</div>
+              <div class="balance-num" id="balanceNum">0.00</div>
+            </div>
+            <div class="currency-picker">
+              <select id="currencySelect">
+                <option value="USD">$ USD</option>
+                <option value="EUR">€ EUR</option>
+                <option value="GBP">£ GBP</option>
+                <option value="INR">₹ INR</option>
+                <option value="JPY">¥ JPY</option>
+              </select>
+            </div>
+          </div>
+          <div class="stat-pair">
+            <div class="stat income">
+              <div class="label">Total income</div>
+              <div class="val" id="incomeVal">0.00</div>
+            </div>
+            <div class="stat expense">
+              <div class="label">Total expense</div>
+              <div class="val" id="expenseVal">0.00</div>
+            </div>
+          </div>
+          <div class="perf"></div>
+        </div>
+        <div class="chart-card">
+          <div class="eyebrow">Cash flow, last 7 entries</div>
+          <div id="chartHolder"></div>
+        </div>
+
+        <div class="entry-card">
+          <h2 class="entry-title">Add a transaction</h2>
+          <div class="entry-grid">
+            <div class="type-toggle">
+              <button type="button" id="typeIncomeBtn" class="active income">
+                ＋ Income
+              </button>
+              <button type="button" id="typeExpenseBtn" class="expense">
+                － Expense
+              </button>
+            </div>
+            <div class="field full">
+              <label for="descInput">Description</label>
+              <input
+                type="text"
+                id="descInput"
+                placeholder="e.g. Freelance payment, Groceries"
+              />
+            </div>
+            <div class="field">
+              <label for="amountInput">Amount</label>
+              <input
+                type="number"
+                id="amountInput"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+              />
+            </div>
+            <div class="field">
+              <label for="categoryInput">Category</label>
+              <input
+                type="text"
+                id="categoryInput"
+                placeholder="e.g. Food, Salary"
+              />
+            </div>
+            <button class="add-btn" id="addBtn">Add transaction</button>
+          </div>
+        </div>
+
+        <div class="ledger-card">
+          <div class="ledger-head">
+            <h2 class="ledger-title">Transaction history</h2>
+            <div class="filters">
+              <button class="active" data-filter="all">All</button>
+              <button data-filter="income">Income</button>
+              <button data-filter="expense">Expense</button>
+            </div>
+          </div>
+          <div id="txList"></div>
+        </div>
+
+        <div class="settings-card">
+          <h2 class="entry-title">Profile settings</h2>
+          <div class="settings-grid">
+            <div class="field">
+              <label for="nameInput">Display name</label>
+              <input type="text" id="nameInput" placeholder="e.g. Alex" />
+            </div>
+            <div class="field">
+              <label for="prefCurrency">Preferred currency</label>
+              <select id="prefCurrency">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="INR">INR</option>
+                <option value="JPY">JPY</option>
+              </select>
+            </div>
+          </div>
+          <div class="reset-row">
+            <p>
+              Clear every saved transaction and preference for this account.
+              This cannot be undone.
+            </p>
+            <button class="reset-btn" id="resetBtn">Reset all data</button>
+          </div>
+        </div>
+
+        <div class="footnote" id="footnote">
+          Signed in as <span id="footAccount"></span> — data is saved to your
+          Claude account.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        // ---- constants ----
+        const RATES = { USD: 1, EUR: 0.92, GBP: 0.78, INR: 83.5, JPY: 156 };
+        const SYMS = { USD: "$", EUR: "€", GBP: "£", INR: "₹", JPY: "¥" };
+        const LAST_USER_KEY = "fintrack:lastUser";
+
+        function daysAgo(n) {
+          const d = new Date();
+          d.setDate(d.getDate() - n);
+          return d.toISOString();
+        }
+
+        function seedTransactions() {
+          return [
+            {
+              id: 1,
+              desc: "Monthly salary",
+              category: "Salary",
+              type: "income",
+              amountUSD: 2400,
+              date: daysAgo(6),
+            },
+            {
+              id: 2,
+              desc: "Groceries",
+              category: "Food",
+              type: "expense",
+              amountUSD: 86.4,
+              date: daysAgo(5),
+            },
+            {
+              id: 3,
+              desc: "Freelance design work",
+              category: "Freelance",
+              type: "income",
+              amountUSD: 320,
+              date: daysAgo(4),
+            },
+            {
+              id: 4,
+              desc: "Electricity bill",
+              category: "Utilities",
+              type: "expense",
+              amountUSD: 64,
+              date: daysAgo(2),
+            },
+            {
+              id: 5,
+              desc: "Coffee & lunch",
+              category: "Food",
+              type: "expense",
+              amountUSD: 18.5,
+              date: daysAgo(1),
+            },
+          ];
+        }
+
+        let state = {
+          username: "",
+          pin: "",
+          name: "",
+          currency: "USD",
+          theme: "dark",
+          type: "income",
+          filter: "all",
+          transactions: [],
+        };
+
+        function accountKey(username) {
+          return "fintrack:user:" + username.trim().toLowerCase();
+        }
+
+        // ---- elements: login ----
+        const loginScreen = document.getElementById("loginScreen");
+        const appScreen = document.getElementById("appScreen");
+        const loginForm = document.getElementById("loginForm");
+        const loginUsername = document.getElementById("loginUsername");
+        const loginPin = document.getElementById("loginPin");
+        const loginError = document.getElementById("loginError");
+        const loginSubmit = document.getElementById("loginSubmit");
+
+        // prefill last used account name, best-effort
+        (async function prefill() {
+          try {
+            const res = await window.storage.get(LAST_USER_KEY, false);
+            if (res && res.value) loginUsername.value = res.value;
+          } catch (e) {
+            /* no last user yet, ignore */
+          }
+        })();
+
+        function setLoginBusy(busy, label) {
+          loginSubmit.disabled = busy;
+          loginSubmit.innerHTML = busy
+            ? `<span class="spinner"></span> ${label || "Working…"}`
+            : "Continue";
+        }
+
+        loginForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          loginError.textContent = "";
+          const username = loginUsername.value.trim();
+          const pin = loginPin.value.trim();
+
+          if (!username) {
+            loginError.textContent = "Enter an account name.";
+            return;
+          }
+          if (!/^\d{4}$/.test(pin)) {
+            loginError.textContent = "PIN must be exactly 4 digits.";
+            return;
+          }
+
+          const key = accountKey(username);
+          setLoginBusy(true, "Checking…");
+
+          let existing = null;
+          try {
+            const res = await window.storage.get(key, false);
+            if (res && res.value) existing = JSON.parse(res.value);
+          } catch (e) {
+            existing = null; // key not found -> treat as new account
+          }
+
+          if (existing) {
+            if (existing.pin !== pin) {
+              setLoginBusy(false);
+              loginError.textContent = "Incorrect PIN for that account name.";
+              loginPin.value = "";
+              loginPin.focus();
+              return;
+            }
+            state.username = username;
+            state.pin = pin;
+            state.name = existing.name || "";
+            state.currency = existing.currency || "USD";
+            state.theme = existing.theme || "dark";
+            state.transactions = Array.isArray(existing.transactions)
+              ? existing.transactions
+              : [];
+          } else {
+            // brand new account
+            state.username = username;
+            state.pin = pin;
+            state.name = "";
+            state.currency = "USD";
+            state.theme = "dark";
+            state.transactions = seedTransactions();
+            try {
+              await window.storage.set(
+                key,
+                JSON.stringify({
+                  pin: state.pin,
+                  name: state.name,
+                  currency: state.currency,
+                  theme: state.theme,
+                  transactions: state.transactions,
+                }),
+                false,
+              );
+            } catch (e) {
+              setLoginBusy(false);
+              loginError.textContent =
+                "Couldn't create the account. Try again.";
+              return;
+            }
+          }
+
+          try {
+            await window.storage.set(LAST_USER_KEY, username, false);
+          } catch (e) {
+            /* non-critical */
+          }
+
+          setLoginBusy(false);
+          enterApp();
+        });
+
+        function enterApp() {
+          loginScreen.style.display = "none";
+          appScreen.style.display = "block";
+          document.body.classList.toggle("light", state.theme === "light");
+          footAccount.textContent = state.username;
+          render();
+        }
+
+        function showLogin() {
+          appScreen.style.display = "none";
+          loginScreen.style.display = "flex";
+          loginPin.value = "";
+          loginError.textContent = "";
+          loginPin.focus();
+        }
+
+        // ---- persistence ----
+        let saveTimer = null;
+        function saveUserData() {
+          if (!state.username) return;
+          const key = accountKey(state.username);
+          const payload = JSON.stringify({
+            pin: state.pin,
+            name: state.name,
+            currency: state.currency,
+            theme: state.theme,
+            transactions: state.transactions,
+          });
+          clearTimeout(saveTimer);
+          saveTimer = setTimeout(async () => {
+            try {
+              await window.storage.set(key, payload, false);
+            } catch (e) {
+              console.error("Save failed", e);
+            }
+          }, 250);
+        }
+
+        // ---- elements: app ----
+        const el = (id) => document.getElementById(id);
+        const balanceNum = el("balanceNum"),
+          incomeVal = el("incomeVal"),
+          expenseVal = el("expenseVal");
+        const txList = el("txList"),
+          chartHolder = el("chartHolder");
+        const currencySelect = el("currencySelect"),
+          prefCurrency = el("prefCurrency");
+        const nameInput = el("nameInput"),
+          greeting = el("greeting");
+        const descInput = el("descInput"),
+          amountInput = el("amountInput"),
+          categoryInput = el("categoryInput");
+        const typeIncomeBtn = el("typeIncomeBtn"),
+          typeExpenseBtn = el("typeExpenseBtn");
+        const footAccount = el("footAccount");
+
+        function fmt(amountUSD) {
+          const rate = RATES[state.currency];
+          const val = amountUSD * rate;
+          const sym = SYMS[state.currency];
+          const decimals = state.currency === "JPY" ? 0 : 2;
+          return (
+            sym +
+            val.toLocaleString(undefined, {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals,
+            })
+          );
+        }
+
+        function render() {
+          greeting.textContent = state.name
+            ? `${state.name}'s Ledger`
+            : "Ledger";
+          currencySelect.value = state.currency;
+          prefCurrency.value = state.currency;
+          nameInput.value = state.name;
+
+          let income = 0,
+            expense = 0;
+          state.transactions.forEach((t) => {
+            if (t.type === "income") income += t.amountUSD;
+            else expense += t.amountUSD;
+          });
+          const balance = income - expense;
+          balanceNum.textContent = fmt(balance);
+          balanceNum.classList.toggle("negative", balance < 0);
+          incomeVal.textContent = fmt(income);
+          expenseVal.textContent = fmt(expense);
+
+          renderChart();
+          renderList();
+        }
+
+        function renderChart() {
+          const items = state.transactions.slice(-7);
+          chartHolder.innerHTML = "";
+          if (items.length === 0) {
+            chartHolder.innerHTML =
+              '<div class="empty-state" style="padding:20px 0;">No data yet — add a transaction to see cash flow.</div>';
+            return;
+          }
+          const w = chartHolder.clientWidth || 660;
+          const h = 90;
+          const barW = w / items.length;
+          const maxAbs = Math.max(...items.map((t) => t.amountUSD), 1);
+          let svg = `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">`;
+          const zero = h / 2;
+          svg += `<line x1="0" y1="${zero}" x2="${w}" y2="${zero}" stroke="var(--line-dark)" stroke-width="1"/>`;
+          items.forEach((t, i) => {
+            const barH = (t.amountUSD / maxAbs) * (h / 2 - 8);
+            const x = i * barW + barW * 0.25;
+            const bw = barW * 0.5;
+            const color = t.type === "income" ? "var(--green)" : "var(--red)";
+            const y = t.type === "income" ? zero - barH : zero;
+            const hh = Math.max(barH, 2);
+            svg += `<rect x="${x}" y="${y}" width="${bw}" height="${hh}" rx="2" fill="${color}"/>`;
+          });
+          svg += `</svg>`;
+          chartHolder.innerHTML = svg;
+        }
+
+        function renderList() {
+          let items = state.transactions.slice().reverse();
+          if (state.filter !== "all")
+            items = items.filter((t) => t.type === state.filter);
+
+          if (items.length === 0) {
+            txList.innerHTML = `<div class="empty-state"><span class="glyph">✎</span>No entries here yet. Add your first transaction above.</div>`;
+            return;
+          }
+          txList.innerHTML = items
+            .map((t) => {
+              const d = new Date(t.date);
+              const dateStr = d.toLocaleDateString(undefined, {
+                month: "short",
+                day: "numeric",
+              });
+              const sign = t.type === "income" ? "+" : "−";
+              return `
         <div class="tx-row">
           <span class="tx-dot ${t.type}"></span>
           <div class="tx-info">
             <div class="tx-desc">${escapeHtml(t.desc)}</div>
-            <div class="tx-meta">${escapeHtml(t.category || 'Uncategorized')} · ${dateStr}</div>
+            <div class="tx-meta">${escapeHtml(t.category || "Uncategorized")} · ${dateStr}</div>
           </div>
           <div class="tx-amt ${t.type}">${sign}${fmt(t.amountUSD)}</div>
           <button class="tx-del" data-id="${t.id}" aria-label="Delete transaction">✕</button>
         </div>`;
-    }).join('');
-  }
+            })
+            .join("");
+        }
 
-  function escapeHtml(s){
-    const d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
-  }
+        function escapeHtml(s) {
+          const d = document.createElement("div");
+          d.textContent = s;
+          return d.innerHTML;
+        }
 
-  // ---- events ----
-  typeIncomeBtn.addEventListener('click', ()=>{
-    state.type='income';
-    typeIncomeBtn.classList.add('active');
-    typeExpenseBtn.classList.remove('active');
-  });
-  typeExpenseBtn.addEventListener('click', ()=>{
-    state.type='expense';
-    typeExpenseBtn.classList.add('active');
-    typeIncomeBtn.classList.remove('active');
-  });
+        // ---- events ----
+        typeIncomeBtn.addEventListener("click", () => {
+          state.type = "income";
+          typeIncomeBtn.classList.add("active");
+          typeExpenseBtn.classList.remove("active");
+        });
+        typeExpenseBtn.addEventListener("click", () => {
+          state.type = "expense";
+          typeExpenseBtn.classList.add("active");
+          typeIncomeBtn.classList.remove("active");
+        });
 
-  el('addBtn').addEventListener('click', ()=>{
-    const desc = descInput.value.trim();
-    const amtRaw = parseFloat(amountInput.value);
-    const category = categoryInput.value.trim();
-    if(!desc || isNaN(amtRaw) || amtRaw <= 0){
-      descInput.focus();
-      return;
-    }
-    const amountUSD = amtRaw / RATES[state.currency];
-    state.transactions.push({
-      id: Date.now(),
-      desc, category, type: state.type,
-      amountUSD, date: new Date().toISOString()
-    });
-    descInput.value=''; amountInput.value=''; categoryInput.value='';
-    render();
-    saveUserData();
-  });
+        el("addBtn").addEventListener("click", () => {
+          const desc = descInput.value.trim();
+          const amtRaw = parseFloat(amountInput.value);
+          const category = categoryInput.value.trim();
+          if (!desc || isNaN(amtRaw) || amtRaw <= 0) {
+            descInput.focus();
+            return;
+          }
+          const amountUSD = amtRaw / RATES[state.currency];
+          state.transactions.push({
+            id: Date.now(),
+            desc,
+            category,
+            type: state.type,
+            amountUSD,
+            date: new Date().toISOString(),
+          });
+          descInput.value = "";
+          amountInput.value = "";
+          categoryInput.value = "";
+          render();
+          saveUserData();
+        });
 
-  txList.addEventListener('click', e=>{
-    const btn = e.target.closest('.tx-del');
-    if(!btn) return;
-    const id = Number(btn.dataset.id);
-    state.transactions = state.transactions.filter(t=>t.id !== id);
-    render();
-    saveUserData();
-  });
+        txList.addEventListener("click", (e) => {
+          const btn = e.target.closest(".tx-del");
+          if (!btn) return;
+          const id = Number(btn.dataset.id);
+          state.transactions = state.transactions.filter((t) => t.id !== id);
+          render();
+          saveUserData();
+        });
 
-  document.querySelectorAll('.filters button').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('active'));
-      b.classList.add('active');
-      state.filter = b.dataset.filter;
-      renderList();
-    });
-  });
+        document.querySelectorAll(".filters button").forEach((b) => {
+          b.addEventListener("click", () => {
+            document
+              .querySelectorAll(".filters button")
+              .forEach((x) => x.classList.remove("active"));
+            b.classList.add("active");
+            state.filter = b.dataset.filter;
+            renderList();
+          });
+        });
 
-  currencySelect.addEventListener('change', ()=>{
-    state.currency = currencySelect.value;
-    render();
-    saveUserData();
-  });
-  prefCurrency.addEventListener('change', ()=>{
-    state.currency = prefCurrency.value;
-    render();
-    saveUserData();
-  });
-  nameInput.addEventListener('input', ()=>{
-    state.name = nameInput.value;
-    greeting.textContent = state.name ? `${state.name}'s Ledger` : 'Ledger';
-    saveUserData();
-  });
+        currencySelect.addEventListener("change", () => {
+          state.currency = currencySelect.value;
+          render();
+          saveUserData();
+        });
+        prefCurrency.addEventListener("change", () => {
+          state.currency = prefCurrency.value;
+          render();
+          saveUserData();
+        });
+        nameInput.addEventListener("input", () => {
+          state.name = nameInput.value;
+          greeting.textContent = state.name
+            ? `${state.name}'s Ledger`
+            : "Ledger";
+          saveUserData();
+        });
 
-  el('themeToggle').addEventListener('click', ()=>{
-    state.theme = state.theme === 'dark' ? 'light' : 'dark';
-    document.body.classList.toggle('light', state.theme === 'light');
-    saveUserData();
-  });
+        el("themeToggle").addEventListener("click", () => {
+          state.theme = state.theme === "dark" ? "light" : "dark";
+          document.body.classList.toggle("light", state.theme === "light");
+          saveUserData();
+        });
 
-  el('resetBtn').addEventListener('click', ()=>{
-    if(!confirm('Reset all data? This clears every transaction and preference for this account.')) return;
-    state.transactions = [];
-    state.name = '';
-    state.currency = 'USD';
-    render();
-    saveUserData();
-  });
+        el("resetBtn").addEventListener("click", () => {
+          if (
+            !confirm(
+              "Reset all data? This clears every transaction and preference for this account.",
+            )
+          )
+            return;
+          state.transactions = [];
+          state.name = "";
+          state.currency = "USD";
+          render();
+          saveUserData();
+        });
 
-  el('logoutBtn').addEventListener('click', ()=>{
-    state = {username:'', pin:'', name:'', currency:'USD', theme:'dark', type:'income', filter:'all', transactions:[]};
-    showLogin();
-  });
+        el("logoutBtn").addEventListener("click", () => {
+          state = {
+            username: "",
+            pin: "",
+            name: "",
+            currency: "USD",
+            theme: "dark",
+            type: "income",
+            filter: "all",
+            transactions: [],
+          };
+          showLogin();
+        });
 
-  window.addEventListener('resize', renderChart);
-})();
-</script>
-</body>
+        window.addEventListener("resize", renderChart);
+      })();
+    </script>
+  </body>
 </html>
